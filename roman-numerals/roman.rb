@@ -6,9 +6,9 @@ class Fixnum
 
   def to_roman
     number = self
-    sorted_roman_numerals.reduce("") do |numerals, key|
-      numeral_amount, number = number.divmod ROMAN_CONVERSION[key]
-      numerals + key.to_s * numeral_amount
+    sorted_roman_numerals.reduce("") do |number_in_roman, numeral|
+      numeral_amount, number = number.divmod ROMAN_CONVERSION[numeral]
+      number_in_roman + numeral.to_s * numeral_amount
     end
   end
 
