@@ -12,6 +12,8 @@ class Fixnum
     end
   end
 
+  private
+
   def sorted_roman_numerals
     ROMAN_CONVERSION.keys.sort_by { |numeral| -ROMAN_CONVERSION[numeral] }
   end
