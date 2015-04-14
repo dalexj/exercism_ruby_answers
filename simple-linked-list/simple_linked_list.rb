@@ -1,36 +1,38 @@
 class Element
   attr_reader :datum, :next
-  attr_accessor :prev
 
   def initialize(datum, next_element)
     @datum = datum
     @next = next_element
-    @next.prev = self if @next
   end
 
   def reverse
-    new_head = Element.new(get_last_element.datum)
-    current_element = get_last_element.prev
+    current_element = self
+    last_created_element = nil
     while current_element
-      
-      current_element = current_element.prev
+      last_created_element = Element.new(current_element.datum, last_created_element)
+      current_element = current_element.next
     end
+    last_created_element
   end
 
-  def get_last_element
-    last_element ||= self
-    while last_element.next
-      last_element = last_element.next
-    end
-    last_element
-  end
-
-  def self.to_a(element)
+  def to_a
     accumulator = []
-    until element.nil?
+    element = self
+    while element
       accumulator << element.datum
       element = element.next
     end
     accumulator
+  end
+
+  def self.to_a(element)
+    element.to_a
+  end
+
+  def self.from_a(array)
+    array.reverse_each.reduce(nil) do |previous_element, array_element|
+      Element.new(array_element, previous_element)
+    end
   end
 end
