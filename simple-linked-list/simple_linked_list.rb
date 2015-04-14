@@ -1,4 +1,5 @@
 class Element
+  include Enumerable
   attr_reader :datum, :next
 
   def initialize(datum, next_element)
@@ -7,23 +8,21 @@ class Element
   end
 
   def reverse
-    current_element = self
-    last_created_element = nil
-    while current_element
-      last_created_element = Element.new(current_element.datum, last_created_element)
-      current_element = current_element.next
+    reduce(nil) do |last_created_element, element|
+      Element.new(element.datum, last_created_element)
     end
-    last_created_element
   end
 
   def to_a
-    accumulator = []
+    map(&:datum)
+  end
+
+  def each
     element = self
     while element
-      accumulator << element.datum
+      yield element
       element = element.next
     end
-    accumulator
   end
 
   def self.to_a(element)
