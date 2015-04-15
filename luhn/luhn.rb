@@ -2,7 +2,8 @@ class Luhn
   attr_reader :addends, :checksum
 
   def self.create(number)
-    (number * 10) + 10 - Luhn.new(number * 10).check_digit
+    check_digit = Luhn.new(number * 10).check_digit
+    check_digit.zero? ? (number * 10) : (number * 10) + 10 - check_digit
   end
 
   def initialize(number)
