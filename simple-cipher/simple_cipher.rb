@@ -7,13 +7,19 @@ class Cipher
   end
 
   def encode(plaintext)
+    plaintext.each_char.with_index.reduce("") do |encoded_text, (char, index)|
+      encoded_text + rotate_char(char, rotate_amounts[index])
+    end
   end
 
   def decode(ciphertext)
+    ciphertext.each_char.with_index.reduce("") do |decoded_text, (char, index)|
+      decoded_text + rotate_char(char, -rotate_amounts[index])
+    end
   end
 
   def rotate_amounts
-    key.chars.map { |char| char.ord - 97 }
+    @rotate_amounts ||= key.chars.map { |char| char.ord - 97 }
   end
 
   # private
