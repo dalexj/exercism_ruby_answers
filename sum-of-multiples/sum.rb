@@ -9,15 +9,18 @@ class SumOfMultiples
   end
 
   def to(end_number)
-    (3..end_number s- 1).reduce(0) do |sum, number|
+    (min_multiple...end_number).reduce(0) do |sum, number|
       is_multiple?(number) ? sum + number : sum
     end
   end
+
+  private
 
   def is_multiple?(number)
     @multiples.any? { |multiple| number % multiple == 0 }
   end
 
+  def min_multiple
+    @multiples.min
+  end
 end
-
-SumOfMultiples.to(4)
