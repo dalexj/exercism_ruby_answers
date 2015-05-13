@@ -1,9 +1,6 @@
 class Deque
   def push(data)
-    element = Element.new(data)
-    element.prev = @tail
-    @tail.next = element if @tail
-    @tail = element
+    @tail = Element.new(data, prev: @tail)
     @head ||= @tail
   end
 
@@ -24,10 +21,7 @@ class Deque
   end
 
   def unshift(data)
-    element = Element.new(data)
-    element.next = @head
-    @head.prev = element if @head
-    @head = element
+    @head = Element.new(data, next: @head)
     @tail ||= @head
   end
 end
@@ -35,7 +29,15 @@ end
 class Element
   attr_reader :data
   attr_accessor :next, :prev
-  def initialize(data)
+  def initialize(data, connections = {})
     @data = data
+    make_connections(connections)
+  end
+
+  def make_connections(connections)
+    @next = connections[:next]
+    @prev = connections[:prev]
+    @next.prev = self if @next
+    @prev.next = self if @prev
   end
 end
