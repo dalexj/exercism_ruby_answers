@@ -1,6 +1,15 @@
 class Triplet
 
   def self.where(max_factor:, min_factor: 1, sum: nil)
+    all_triplets_in_range(min_factor..max_factor).select do |triplet|
+      sum.nil? || triplet.sum == sum
+    end
+  end
+
+  def self.all_triplets_in_range(range)
+    range.to_a.repeated_combination(3)
+      .map { |sides| Triplet.new(*sides) }
+      .select(&:pythagorean?)
   end
 
   def initialize(*sides)
